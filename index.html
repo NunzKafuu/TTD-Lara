@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<!--
+  CARA EDIT (VS Code)
+  1. Cari tulisan "EDIT DI SINI" (Ctrl+F).
+  2. Ganti tanggal, kode verifikasi, nama, atau jabatan sesuai kebutuhan.
+  3. Simpan lalu buka index.html di browser.
+  File ini harus satu folder dengan: ttd-lala.svg dan cap-digma.png
+-->
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tanda Tangan Digital - Lala Prihatini</title>
+<style>
+  :root {
+    /* Warna diambil dari logo DIGMA - ubah di sini untuk ganti tema */
+    --navy: #082a5c;        /* latar halaman (biru tua) */
+    --navy-2: #0f4c9c;      /* cahaya gradasi latar */
+    --ring: #5f8dbe;        /* biru baja: cincin luar logo */
+    --blue: #0049af;        /* biru kotak logo */
+    --bronze: #b47830;      /* perunggu huruf D */
+    --paper: #f7f9fd;
+    --ink: #0f2347;
+    --muted: #5a6b85;
+    --line: #c9d5e6;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; min-height: 100vh; display: grid; place-items: center; padding: 24px;
+    color: var(--ink);
+    font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+    background:
+      radial-gradient(circle at 20% 10%, var(--navy-2), transparent 55%),
+      repeating-linear-gradient(135deg, rgba(255,255,255,.035) 0 1px, transparent 1px 14px),
+      var(--navy);
+  }
+  .lembar {
+    position: relative; width: 100%; max-width: 620px; overflow: hidden;
+    background:
+      repeating-radial-gradient(circle at 100% 100%, transparent 0 9px, rgba(0,73,175,.06) 9px 10px),
+      var(--paper);
+    border-radius: 6px;
+    box-shadow: 0 0 0 8px var(--ring), 0 30px 60px rgba(0,0,0,.45);
+    padding: 40px 40px 32px;
+  }
+  .lembar::before {
+    content: ""; position: absolute; inset: 10px; pointer-events: none;
+    border: 1px solid var(--bronze); border-radius: 3px;
+  }
+  .lembar::after {
+    content: ""; position: absolute; inset: 15px; pointer-events: none;
+    border: 1px solid var(--blue); border-radius: 2px; opacity: .55;
+  }
+  header { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; }
+  h1 {
+    margin: 0; font: 700 1.9rem/1.15 "Palatino Linotype", Palatino, "Book Antiqua", Georgia, serif;
+    letter-spacing: .2px; color: var(--navy);
+  }
+  .sub { margin: 6px 0 0; color: var(--muted); font-size: .95rem; }
+  .lencana {
+    display: inline-flex; align-items: center; gap: 6px; white-space: nowrap;
+    padding: 6px 12px; border-radius: 999px; font-size: .85rem; font-weight: 600;
+    color: var(--blue); background: rgba(0,73,175,.09); border: 1px solid rgba(0,73,175,.35);
+  }
+  .lencana svg { width: 16px; height: 16px; }
+
+  .area {
+    position: relative; margin: 36px 0 20px; height: 230px;
+  }
+  .tanda-x {
+    position: absolute; left: 6px; bottom: 52px; font: 400 1.4rem Georgia, serif; color: var(--muted);
+  }
+  .garis-dasar {
+    position: absolute; left: 0; right: 0; bottom: 44px; border-bottom: 1.5px dotted var(--bronze); opacity: .8;
+  }
+  .ttd {
+    position: absolute; left: 34px; bottom: 34px; width: 250px; height: auto;
+    clip-path: inset(0 100% 0 0);
+  }
+  .cap {
+    position: absolute; left: 255px; bottom: -4px; width: 175px; height: auto;
+    opacity: 0; transform: rotate(-9deg); mix-blend-mode: multiply;
+  }
+
+  .nama { margin: 0; font: 700 1.25rem "Palatino Linotype", Palatino, Georgia, serif; }
+  .jabatan { margin: 2px 0 0; color: var(--muted); font-size: .92rem; }
+
+  dl {
+    display: grid; grid-template-columns: .6fr 1fr 1.7fr; gap: 16px;
+    margin: 26px 0 0; padding-top: 18px; border-top: 1px solid var(--line);
+  }
+  dt { color: var(--muted); font-size: .8rem; }
+  dd { margin: 2px 0 0; font: 600 .92rem ui-monospace, "SF Mono", Menlo, Consolas, monospace; word-break: break-all; }
+
+  button {
+    margin-top: 24px; padding: 9px 16px; border-radius: 6px; cursor: pointer;
+    border: 1px solid var(--blue); background: transparent; color: var(--blue);
+    font: 600 .9rem system-ui, sans-serif;
+  }
+  button:hover { background: var(--blue); color: #fff; }
+  button:focus-visible { outline: 3px solid var(--bronze); outline-offset: 2px; }
+
+  /* Satu rangkaian animasi: tanda tangan ditulis, lalu stempel jatuh */
+  .play .ttd  { animation: tulis 2.2s cubic-bezier(.5,0,.3,1) .3s forwards; }
+  .play .cap { animation: stempel .6s cubic-bezier(.2,1.5,.4,1) 2.6s forwards; }
+  @keyframes tulis { to { clip-path: inset(0 0 0 0); } }
+  @keyframes stempel {
+    from { opacity: 0; transform: scale(1.9) rotate(-30deg); }
+    to   { opacity: .88; transform: scale(1) rotate(-9deg); }
+  }
+
+  @media (max-width: 520px) {
+    .lembar { padding: 32px 22px 26px; }
+    header { flex-direction: column; }
+    .ttd { width: 62%; left: 0; }
+    .cap { left: auto; right: 0; width: 125px; }
+    dl { grid-template-columns: 1fr; gap: 10px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .ttd { clip-path: none; animation: none !important; }
+    .cap { opacity: .88; animation: none !important; }
+  }
+</style>
+</head>
+<body>
+<main class="lembar play" id="lembar">
+  <header>
+    <div>
+      <h1>Pengesahan dokumen</h1>
+      <p class="sub">Ditandatangani secara digital</p>
+    </div>
+    <span class="lencana">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2l8 3v6c0 5-3.4 9.3-8 11-4.6-1.7-8-6-8-11V5z"/><path d="M8.5 12l2.5 2.5 4.5-5"/></svg>
+      Terverifikasi
+    </span>
+  </header>
+
+  <div class="area">
+    <span class="tanda-x" aria-hidden="true">&times;</span>
+    <div class="garis-dasar"></div>
+    <img class="ttd" src="ttd-lala.svg" alt="Tanda tangan Lala Prihatini">
+
+    <img class="cap" alt="Cap Digital Business Movement Association (DIGMA)" src="cap-digma.png">
+  </div>
+
+  <!-- ===== EDIT DI SINI: nama & jabatan ===== -->
+  <p class="nama">Lala Prihatini</p>
+  <p class="jabatan">Ketua DIGMA</p>
+
+  <!-- ===== EDIT DI SINI: tanggal & kode verifikasi ===== -->
+
+  <!-- ===== SELESAI EDIT ===== -->
+
+  <button type="button" id="ulang">Putar ulang animasi</button>
+</main>
+
+<script>
+  (function () {
+    var lembar = document.getElementById('lembar');
+    document.getElementById('ulang').addEventListener('click', function () {
+      lembar.classList.remove('play');
+      void lembar.offsetWidth;
+      lembar.classList.add('play');
+    });
+  })();
+</script>
+</body>
+</html>
